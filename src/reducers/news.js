@@ -34,11 +34,10 @@ const INITIAL_STATE = {
 }
 
 const news = (state = INITIAL_STATE, action) => {
+    let news_array = state.news_list.find(el => el.id === action.newsId);
     switch (action.type) {
         case 'ADD_COMMENT':
-
-            const news_add_comment = state.news_list.find(el => el.id === action.newsId);
-            news_add_comment.comments.push({...action.comment, id: action.nextCommentId});
+            news_array.comments.push({...action.comment, id: action.nextCommentId});
             return {
                 ...state,
                 news_list: [
@@ -46,16 +45,25 @@ const news = (state = INITIAL_STATE, action) => {
                 ]
             }
         case 'EDIT_COMMENT':
-            const news_edit_comment = state.news_list.find(el => el.id === action.newsId);
-            let foundComment = news_edit_comment.comments.findIndex(cmnt => cmnt.id === action.comment.id);
-            news_edit_comment.comments[foundComment] = action.comment;
-            console.log(news_edit_comment);
+            let foundComment = news_array.comments.findIndex(cmnt => cmnt.id === action.comment.id);
+            news_array.comments[foundComment] = action.comment;
             return {
                 ...state,
                 news_list: [
                     ...state.news_list, 
                 ]
             }
+        case 'DELETE_COMMENT':
+            let comment_list = news_array.comments.filter(cmnt => cmnt.id !== action.comment.id);
+            news_array.comments = comment_list;
+            console.log(news_array);
+            return {
+                ...state,
+                news_list: [
+                    ...state.news_list,
+                ]
+            }
+
         default:
             return state
     }

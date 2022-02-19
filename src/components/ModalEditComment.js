@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/esm/Modal';
 import { Button, Form } from 'react-bootstrap';
-import { editComment } from '../actions';
-import { connect } from 'react-redux';
+import { deteteComment, editComment } from '../actions';
+import { connect, useSelector } from 'react-redux';
 
 
 const ModalEditComment = ({ editData, dispatch, newsId }) => {
+    const isAdmin = useSelector(state => state.user);
     const [show, setShow] = useState(false);
     const [activeComment, setActiveComment] = useState(editData)
     const handleClose = () => setShow(false);
@@ -15,22 +16,21 @@ const ModalEditComment = ({ editData, dispatch, newsId }) => {
         handleClose();
         
     }
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        switch (name) {
-            case "text":
-                setActiveComment({ ...activeComment, text: value });
-                break;
-
-        }
+    const handleDelete = () => {
+        dispatch(deteteComment(newsId,activeComment));
     }
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
                 Edit
             </Button>
-
+            {
+                isAdmin.isAdmin && (
+                    <Button variant="danger" onClick={handleDelete}>
+                        Delete
+                    </Button>
+                )
+            }
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Comment edit</Modal.Title>

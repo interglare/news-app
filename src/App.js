@@ -1,16 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
-import { Link } from "react-router-dom";
 import NewsComponent from './components/NewsComponent';
-import { useSelector } from 'react-redux';
-import { Container } from 'react-bootstrap';
+import { connect, useSelector } from 'react-redux';
+import { Button, Container } from 'react-bootstrap';
+import { loginAdmin } from './actions';
 
 
-function App() {
+function App({dispatch}) {
   const news_list = useSelector(state => state.news.news_list);
+  const handleLogin = () => {
+    dispatch(loginAdmin());
+  };
   return (
     <div className="App">
+      <Button onClick={handleLogin} >Login as admin</Button>
       <Container>
+
         {
           news_list.map(news_item =>
             news_item && (
@@ -22,4 +26,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect()(App);

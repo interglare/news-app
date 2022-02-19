@@ -11,3 +11,14 @@ export const editComment = (newsId, comment) => ({
   comment
 })
 
+export const deteteComment = (newsId, comment) => ({
+  type: 'DELETE_COMMENT',
+  newsId: parseInt(newsId),
+  comment
+})
+
+
+
+export const loginAdmin = () => ({
+  type: 'LOGIN_ADMIN'
+})
